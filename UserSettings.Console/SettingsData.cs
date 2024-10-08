@@ -2,7 +2,7 @@
 
 namespace UserSettings.Console
 {
-    public class Settings : ISettings
+    public class SettingsData : ISettingsData
     {
 
         public const string filePath = "savedsettings.txt";
@@ -18,9 +18,9 @@ namespace UserSettings.Console
                 }
 
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                throw;
+                throw e;
             }
         }
 

@@ -1,6 +1,6 @@
 ﻿namespace UserSettings.Console
 {
-    public interface ISettings
+    public interface ISettingsData
     {
         void SaveSettings(string settings);
         string GetSettings();

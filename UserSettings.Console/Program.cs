@@ -3,53 +3,57 @@ using UserSettings.Console;
 
 internal class Program
 {
-    const string settingsString = "00000010";
+    static bool isValidInput;
+    private static ISettingsService _settingService;
+    static string enabledResult;
     private static void Main(string[] args)
     {
+        var services = InjectDependencies();
+        _settingService = services.GetRequiredService<ISettingsService>();
+
         #region Question 2.2
-        var userSettings = GetSettingsService();
+        //var userSettings = GetSettingsService();
         //Saving settings strings to file
-        userSettings.SaveSettings(settingsString);
+        //userSettings.SaveSettings(settingsString);
         //Getting settings from file
-        var settings = userSettings.GetSettings();
+        //var settings = userSettings.GetSettings();
         #endregion
 
         #region Question 2.1
-        Console.WriteLine("Please enter setting you want to check: ");
-        var setting = Console.ReadLine();
+        while (!isValidInput) {
+            Console.Clear();
+            Console.WriteLine("Please enter setting you want to check: ");
+            var setting = Console.ReadLine();
+            var result = _settingService.ValidateInput(setting);
+            var isValid = result.Item1;
+            var settingId = result.Item2;
 
-        var parseResult = int.TryParse(setting, out int intSetting);
-        if (intSetting > settingsString.Length || !parseResult)
-        {
-            Console.WriteLine("Error reading setting.");
-            Console.ReadLine();
+            if (isValid)
+            {
+                var isEnabled = _settingService.IsSettingEnabled(settingId);
+                if (!isEnabled)
+                {
+                    enabledResult = "Setting is disabled";
+                }
+                else {
+                    enabledResult = "Setting is enabled";
+                }
+                
+                Console.WriteLine(enabledResult);
+                Console.ReadLine();
+                break;
+            }
         }
-        var result = IsSettingEnabled(intSetting);
-
-        Console.WriteLine(result);
-        Console.ReadLine();
-        #region
+        #endregion
     }
-    private static bool IsSettingEnabled(int setting)
-    {
-        var settings = settingsString.ToCharArray();
-        //Assuming that users insert 1 based numbers to check enabled settings instead of 0 based
-        var settingState = settings[setting - 1];
-        if (settingState == '0')
-        {
-            return false;
-        }
-
-        return true;
-    }
-
-    private static ISettings GetSettingsService()
+    
+    private static ServiceProvider InjectDependencies()
     {
         var serviceProvider = new ServiceCollection()
-            .AddSingleton<ISettings, Settings>()
+            .AddSingleton<ISettingsData, SettingsData>()
+            .AddScoped<ISettingsService, SettingsService>()
             .BuildServiceProvider();
 
-        var settingsService = serviceProvider.GetService<ISettings>();
-        return settingsService;
+        return serviceProvider;
     }
 }

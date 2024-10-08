@@ -26,10 +26,10 @@ internal class Program
             var setting = Console.ReadLine();
             var result = _settingService.ValidateInput(setting);
             var isValid = result.Item1;
-            var settingId = result.Item2;
 
             if (isValid)
             {
+                var settingId = result.Item2;
                 var isEnabled = _settingService.IsSettingEnabled(settingId);
                 if (!isEnabled)
                 {

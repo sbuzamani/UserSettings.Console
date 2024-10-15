@@ -30,25 +30,27 @@
             settingsData.SaveSettings(settings);
         }
 
-        public Tuple<bool,int> ValidateInput(string input)
+        public bool ValidateInputGetOutput(string input, out int output)
         {
+            output = default;
             if (string.IsNullOrEmpty(input))
             {
-                return Tuple.Create(false, new int());
+                return false;
             }
 
             var isValid = int.TryParse(input, out int intSetting);
             if (!isValid)
             {
-                return Tuple.Create(false, new int());
+                return false;
             }
 
             if (!InBounds(intSetting))
             {
-                return Tuple.Create(false, new int());
+                return false;
             }
 
-            return Tuple.Create(isValid, intSetting);
+            output = intSetting;
+            return true;
         }
 
         private bool InBounds(int settingId)

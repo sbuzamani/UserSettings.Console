@@ -5,6 +5,6 @@
         bool IsSettingEnabled(int settingId);
         void SaveSettings(string settings);
         string GetSettings();
-        Tuple<bool, int> ValidateInput(string input);
+        bool ValidateInputGetOutput(string input, out int output);
     }
 }

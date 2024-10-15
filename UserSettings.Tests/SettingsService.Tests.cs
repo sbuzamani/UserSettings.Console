@@ -17,33 +17,37 @@ namespace UserSettings.Tests
         public void ValidateInput_WhenInputIsString_ReturnsFalse()
         {
             var input = "this is a string";
-            var result = _settingsService.ValidateInput(input);
-            Assert.False(result.Item1);
+            int output;
+            var result = _settingsService.ValidateInputGetOutput(input, out output);
+            Assert.False(result);
         }
 
         [Fact]
         public void ValidateInput_InputIsOutOfRangeString_ReturnsFalse()
         {
             var input = "16";
-            var result = _settingsService.ValidateInput(input);
-            Assert.False(result.Item1);
+            int output;
+            var result = _settingsService.ValidateInputGetOutput(input, out output);
+            Assert.False(result);
         }
 
         [Fact]
         public void ValidateInput_InputIsEmptyString_ReturnsFalse()
         {
             var input = "";
-            var result = _settingsService.ValidateInput(input);
-            Assert.False(result.Item1);
+            int output;
+            var result = _settingsService.ValidateInputGetOutput(input, out output);
+            Assert.False(result);
         }
 
         [Fact]
         public void ValidateInput_InputIsInRangeString_ReturnsTrueAndValidInt()
         {
             var input = "7";
-            var result = _settingsService.ValidateInput(input);
-            Assert.True(result.Item1);
-            Assert.IsType<int>(result.Item2);
+            int output;
+            var result = _settingsService.ValidateInputGetOutput(input, out output);
+            Assert.True(result);
+            Assert.IsType<int>(output);
         }
 
         [Fact]

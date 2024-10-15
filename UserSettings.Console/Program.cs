@@ -19,17 +19,17 @@ internal class Program
         //var settings = userSettings.GetSettings();
         #endregion
 
+        int output;
         #region Question 2.1
         while (!isValidInput) {
             Console.Clear();
             Console.WriteLine("Please enter setting you want to check: ");
             var setting = Console.ReadLine();
-            var result = _settingService.ValidateInput(setting);
-            var isValid = result.Item1;
+            var isValid = _settingService.ValidateInputGetOutput(setting, out output);
 
             if (isValid)
             {
-                var settingId = result.Item2;
+                var settingId = output;
                 var isEnabled = _settingService.IsSettingEnabled(settingId);
                 if (!isEnabled)
                 {
